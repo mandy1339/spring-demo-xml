@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--  load the properties file: sport.properties -->
+	<context:property-placeholder location="classpath:./pack1/sport.properties" order="1" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:./pack2/fortune.properties" order="2"/>
+	
+
+
+    <!-- Define your beans here -->
+    
+    <!-- COACH BEANS -->
+    <bean id = "myCoach" class="pack1.BaseballCoach">
+    	<constructor-arg ref="myFortune"/>					<!-- Constructor Injection -->
+    </bean>
+    
+    <bean id="myCoach2" class="pack1.FishKeepingCoach">
+    	<constructor-arg ref="myFortune"/>					<!-- Constructor Injection -->
+    </bean>
+    
+    <bean 		id 				="myCoach3" 
+    			class			="pack1.CricketCoach"
+    			init-method		="startThingsUpBoy"
+    			destroy-method	="cleanUpToDestroyBoy">
+    	<property name="fortuneService" ref="myFortune2"/>	<!-- Setter Injection -->
+    	<property name="emailAddress" value="mandy1339@gmail.com"/>		
+    	<property name="team" value="${foo.team}"/>			<!--  Set from a file -->
+    </bean>
+    
+    
+    
+    <!-- FORTUNE SERVICE BEANS -->
+    <bean id="myFortune" class="pack1.HappyFortuneService" scope="singleton"></bean>
+    
+    <bean id="myFortune2" class="pack2.RandomFortuneService" scope="singleton">
+    	<property name="fortunes"> 
+    	<array>
+    		<value>${fortune.1}</value>
+    		<value>${fortune.2}</value>
+    		<value>${fortune.3}</value>
+    		<value>${fortune.4}</value>
+    		<value>${fortune.5}</value>
+    	</array>
+    	</property>
+    </bean>
+    
+</beans>
+
+
+
+
+
